@@ -1,6 +1,5 @@
-@import '@fontsource-variable/newsreader/opsz.css';
-@import '@fontsource-variable/newsreader/opsz-italic.css';
 @import '@fontsource-variable/instrument-sans';
+@import '@fontsource-variable/instrument-sans/wght-italic.css';
 
 /* Night-shift palette: deep navy ground, warm paper text, arterial rose accent. */
 :root {
@@ -13,10 +12,10 @@
   --accent-ink: #121a26;
   --trace: #e9a196;
 
-  --serif: 'Newsreader Variable', 'Iowan Old Style', Georgia, serif;
+  --body: 'Instrument Sans Variable', 'Helvetica Neue', Arial, sans-serif;
   --sans: 'Instrument Sans Variable', 'Helvetica Neue', Arial, sans-serif;
 
-  --measure: 40rem;
+  --measure: 38rem;
   --wide: 62rem;
   --gutter: 1.25rem;
   color-scheme: dark;
@@ -48,10 +47,9 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: var(--serif);
-  font-size: 1.1875rem;
-  line-height: 1.62;
-  font-optical-sizing: auto;
+  font-family: var(--body);
+  font-size: 1.0625rem;
+  line-height: 1.6;
   text-rendering: optimizeLegibility;
 }
 
@@ -81,23 +79,23 @@ a:hover {
 h1,
 h2,
 h3 {
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.15;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
   margin: 0;
 }
 
 h1 {
-  font-size: clamp(2.5rem, 7vw, 4.25rem);
-  letter-spacing: -0.025em;
+  font-size: clamp(2.5rem, 7vw, 4.5rem);
+  letter-spacing: -0.04em;
 }
 
 h2 {
-  font-size: 1.75rem;
+  font-size: 1.5rem;
 }
 
 h3 {
-  font-size: 1.3125rem;
+  font-size: 1.1875rem;
 }
 
 p {
