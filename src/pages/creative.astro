@@ -1,0 +1,65 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+const items = (await getCollection('creative')).sort((a, b) => a.data.order - b.data.order);
+const rendered = await Promise.all(items.map(async (e) => ({ e, Content: (await render(e)).Content })));
+---
+<Base title="Creative" description="Design, video and editorial work by Faiz Dzulfikar.">
+  <div class="wrap">
+    <header class="page-head">
+      <h1>Creative</h1>
+      <p>Design, video and editorial work, mostly for health education and student organisations.</p>
+    </header>
+    <ul class="works">
+      {rendered.map(({ e, Content }) => (
+        <li>
+          {e.data.image
+            ? <img src={e.data.image} alt={e.data.title} loading="lazy" />
+            : <div class="ph" aria-hidden="true"><span>{e.data.kind}</span></div>}
+          <h3>{e.data.link ? <a href={e.data.link}>{e.data.title}</a> : e.data.title}</h3>
+          <p class="meta">{e.data.kind}, {e.data.client}, {e.data.years}</p>
+          <div class="desc"><Content /></div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Base>
+
+<style>
+  .works {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+    gap: 2.5rem 2rem;
+  }
+
+  img,
+  .ph {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+  }
+
+  .ph {
+    display: grid;
+    place-items: center;
+    background: var(--bg-raised);
+    border: 1px solid var(--rule);
+    color: var(--muted);
+    font-style: italic;
+    font-size: 1.5rem;
+  }
+
+  .meta {
+    margin: 0.3rem 0 0.5rem;
+  }
+
+  .desc {
+    font-size: 1rem;
+  }
+</style>
