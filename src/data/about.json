@@ -1,0 +1,34 @@
+{
+  "seoTitle": "About",
+  "seoDescription": "Faiz Dzulfikar is a medical doctor in Yogyakarta with an interest in cardiology, public health, technology and design. A personal profile, and a work in progress.",
+  "updated": "2026-11-24",
+  "showPlaceholders": false,
+  "hero": {
+    "eyebrow": "About",
+    "headline": "A physician, a curious mind, and a perpetual work in progress.",
+    "intro": "I'm a medical doctor in Yogyakarta, working as a research assistant in cardiology at Universitas Gadjah Mada and Dr. Sardjito Hospital. This page is less a CV than a profile: how I ended up in medicine, why the heart and public health pull at me, and what fills the hours outside work.",
+    "location": "Yogyakarta, Indonesia",
+    "portrait": "",
+    "portraitAlt": "Portrait of Faiz Dzulfikar",
+    "portraitCaption": "",
+    "portraitFocus": "center"
+  },
+  "quickFacts": {
+    "visible": true,
+    "title": "At a glance",
+    "items": [
+      { "label": "Based in", "value": "Yogyakarta, Indonesia" },
+      { "label": "Profession", "value": "Medical doctor" },
+      { "label": "Thinking style", "value": "Analytical & systems-oriented" },
+      { "label": "Creative outlets", "value": "Design, video & technology" },
+      { "label": "Favorite aesthetic", "value": "Editorial minimalism" },
+      { "label": "Favorite band", "value": "Lomba Sihir" },
+      { "label": "Memorable film", "value": "TRON: Legacy" },
+      { "label": "Current quest", "value": "42.195 km" },
+      { "label": "Least favorite sport", "value": "Football" },
+      { "label": "Former identity", "value": "A ten-books-a-month bookworm" },
+      { "label": "Recurring problem", "value": "Too many interests, too little time" },
+      { "label": "Unresolved paradox", "value": "Cardiology × work-life balance" }
+    ]
+  }
+}

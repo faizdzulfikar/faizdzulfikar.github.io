@@ -62,9 +62,44 @@ const cv = defineCollection({
   }),
 });
 
-const pages = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/pages' }),
-  schema: z.object({ title: z.string() }),
+// About page: one Markdown file per section. Hero, quick facts and SEO live in src/data/about.json.
+const focus = z
+  .enum(['center', 'top', 'bottom', 'left', 'right', 'top left', 'top right', 'bottom left', 'bottom right'])
+  .default('center');
+
+const aboutImage = z.object({
+  src: z.string().optional().default(''),
+  alt: z.string().default(''),
+  caption: z.string().optional(),
+  focus: focus.optional().default('center'),
 });
 
-export const collections = { writing, projects, creative, cv, pages };
+const about = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/about' }),
+  schema: z.object({
+    title: z.string(),
+    navLabel: z.string().optional(),
+    eyebrow: z.string().optional(),
+    subtitle: z.string().optional(),
+    order: z.number().default(100),
+    visible: z.boolean().default(true),
+    layout: z
+      .enum(['text', 'image-left', 'image-right', 'full-image', 'gallery', 'quote', 'projects', 'closing'])
+      .default('text'),
+    images: z.array(aboutImage).nullish().transform((v) => v ?? []),
+    pullQuote: z
+      .object({ text: z.string().optional().default(''), cite: z.string().optional() })
+      .nullish(),
+    links: z
+      .array(z.object({ label: z.string(), href: z.string() }))
+      .nullish()
+      .transform((v) => v ?? []),
+    // Project ids or Pages CMS reference paths, e.g. "cohard-ph-platform" or "src/content/projects/cohard-ph-platform.md".
+    projects: z
+      .array(z.string())
+      .nullish()
+      .transform((v) => (v ?? []).map((p) => p.split('/').pop()!.replace(/\.mdx?$/, ''))),
+  }),
+});
+
+export const collections = { writing, projects, creative, cv, about };
