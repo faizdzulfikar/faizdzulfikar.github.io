@@ -1,0 +1,384 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import PullQuote from '../PullQuote.astro';
+import Figure from './Figure.astro';
+import ProjectShowcase from './ProjectShowcase.astro';
+
+interface Props {
+  entry: CollectionEntry<'about'>;
+  number?: string;
+  projects?: CollectionEntry<'projects'>[];
+  showPlaceholders?: boolean;
+}
+
+const { entry, number, projects = [], showPlaceholders = false } = Astro.props;
+const d = entry.data;
+const { Content } = await render(entry);
+const id = entry.id;
+const images = d.images.filter((img) => img.src || showPlaceholders);
+const quote = d.pullQuote?.text ? d.pullQuote : undefined;
+
+// Image layouts fall back to plain text when there is nothing to show yet.
+let layout = d.layout;
+if (['image-left', 'image-right', 'full-image', 'gallery'].includes(layout) && images.length === 0) layout = 'text';
+if (layout === 'projects' && projects.length === 0) layout = 'text';
+const galleryCount = Math.min(images.length, 4);
+---
+{layout === 'quote' ? (
+  quote && (
+    <aside class="interlude reveal" aria-label="Pull quote">
+      <PullQuote text={quote.text} cite={quote.cite} size="large" />
+    </aside>
+  )
+) : (
+  <section id={id} class:list={['sec', `sec-${layout}`]} aria-labelledby={`${id}-title`}>
+    <header class="sec-head reveal">
+      <p class="kicker" aria-hidden={!d.eyebrow ? 'true' : undefined}>
+        {number && <span class="num">{number}</span>}
+        <span class="line" aria-hidden="true"></span>
+        {d.eyebrow && <span class="eyebrow">{d.eyebrow}</span>}
+      </p>
+      <h2 id={`${id}-title`}>{d.title}</h2>
+      {d.subtitle && <p class="standfirst">{d.subtitle}</p>}
+    </header>
+
+    {(layout === 'image-left' || layout === 'image-right') && (
+      <div class:list={['split', layout === 'image-left' ? 'media-first' : 'media-last']}>
+        <div class="media reveal">
+          {images.map((img, i) => (
+            <Figure {...img} ratio={i === 0 ? '4 / 5' : '4 / 3'} class={i > 0 ? 'fig-minor' : undefined} />
+          ))}
+        </div>
+        <div class="body prose"><Content /></div>
+      </div>
+    )}
+
+    {layout === 'full-image' && (
+      <>
+        <div class="wide-media reveal">
+          <Figure {...images[0]} ratio="16 / 9" />
+        </div>
+        <div class="body prose indent"><Content /></div>
+      </>
+    )}
+
+    {(layout === 'text' || layout === 'gallery' || layout === 'projects') && (
+      <div class="body prose indent"><Content /></div>
+    )}
+
+    {layout === 'gallery' && (
+      <div class:list={['gallery', `g-${galleryCount}`]}>
+        {images.slice(0, 4).map((img, i) => (
+          <Figure
+            {...img}
+            ratio={galleryCount === 1 ? '16 / 9' : galleryCount >= 3 && i === 0 ? '4 / 5' : '4 / 3'}
+            class={`g-item g-item-${i + 1} reveal`}
+          />
+        ))}
+      </div>
+    )}
+
+    {layout === 'projects' && (
+      <div class="projects-wrap">
+        <ProjectShowcase items={projects} />
+      </div>
+    )}
+
+    {layout === 'closing' && (
+      <div class="closing"><Content /></div>
+    )}
+
+    {d.links.length > 0 && (
+      <nav class="sec-links indent" aria-label={`Related to ${d.title}`}>
+        <span class="see">See also</span>
+        <ul>
+          {d.links.map((l) => (
+            <li><a href={l.href}>{l.label}<span aria-hidden="true"> →</span></a></li>
+          ))}
+        </ul>
+      </nav>
+    )}
+
+    {quote && (
+      <div class="sec-quote indent reveal">
+        <PullQuote text={quote.text} cite={quote.cite} />
+      </div>
+    )}
+  </section>
+)}
+
+<style>
+  .sec {
+    --indent: 0rem;
+    padding: 4.5rem 0 1rem;
+    scroll-margin-top: 4.5rem;
+  }
+
+  .sec-head {
+    margin-bottom: 2.25rem;
+  }
+
+  .kicker {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin: 0 0 1.4rem;
+    font-size: 0.8125rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .num {
+    font-variant-numeric: tabular-nums;
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  .line {
+    flex: 0 0 3rem;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  h2 {
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    letter-spacing: -0.035em;
+    line-height: 1.04;
+    max-width: 18ch;
+    text-wrap: balance;
+  }
+
+  .standfirst {
+    margin: 1rem 0 0;
+    max-width: 34rem;
+    font-size: clamp(1.125rem, 2vw, 1.3rem);
+    line-height: 1.45;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+
+  .body {
+    font-size: 1.125rem;
+    line-height: 1.7;
+    max-width: var(--measure);
+  }
+
+  .body :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .indent {
+    margin-left: var(--indent);
+  }
+
+  /* Image beside text */
+  .split {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .media {
+    display: grid;
+    gap: 1.5rem;
+    align-content: start;
+  }
+
+  .media-last .media {
+    order: 2;
+  }
+
+  .media :global(.fig-minor) {
+    width: 72%;
+    justify-self: end;
+  }
+
+  .wide-media {
+    margin-bottom: 2.5rem;
+  }
+
+  /* Gallery */
+  .gallery {
+    display: grid;
+    gap: 1.25rem;
+    margin-top: 3rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .g-1 {
+    grid-template-columns: 1fr;
+  }
+
+  .g-2 :global(.g-item-2) {
+    margin-top: 3rem;
+  }
+
+  .g-3 :global(.g-item-1),
+  .g-4 :global(.g-item-1) {
+    grid-row: span 2;
+  }
+
+  .projects-wrap {
+    margin-top: 3rem;
+  }
+
+  /* Closing statement */
+  .sec-closing {
+    padding-top: 6rem;
+  }
+
+  .closing {
+    max-width: 46rem;
+  }
+
+  .closing :global(p) {
+    font-size: 1.125rem;
+    line-height: 1.7;
+    max-width: var(--measure);
+  }
+
+  .closing :global(p:last-child) {
+    margin: 2.5rem 0 0;
+    font-family: var(--display);
+    font-style: italic;
+    font-size: clamp(2rem, 5.2vw, 3.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    max-width: none;
+    text-wrap: balance;
+  }
+
+  /* Related links */
+  .sec-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 1.25rem;
+    margin-top: 2.25rem;
+    font-size: 0.9375rem;
+  }
+
+  .see {
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .sec-links ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.25rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .sec-quote {
+    margin-top: 4rem;
+  }
+
+  .interlude {
+    padding: 5rem 0 1rem;
+  }
+
+  @media (min-width: 52rem) {
+    .sec {
+      --indent: 10.5rem;
+      padding-top: 6rem;
+    }
+
+    .sec-head {
+      display: grid;
+      grid-template-columns: var(--indent) minmax(0, 1fr);
+    }
+
+    .kicker {
+      grid-column: 1 / -1;
+    }
+
+    .sec-head h2,
+    .standfirst {
+      grid-column: 2;
+    }
+
+    .split.media-last {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 17rem);
+      gap: 3rem;
+      padding-left: var(--indent);
+    }
+
+    .split.media-last .media {
+      order: 2;
+    }
+
+    .split.media-first {
+      grid-template-columns: minmax(0, 20rem) minmax(0, 1fr);
+      gap: 3.5rem;
+    }
+
+    .split.media-first .media {
+      margin-top: 0.4rem;
+    }
+
+    .gallery {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 1.5rem;
+    }
+
+    .g-1 :global(.g-item-1) {
+      grid-column: 1 / -1;
+    }
+
+    .g-2 :global(.g-item-1) {
+      grid-column: 1 / span 7;
+    }
+
+    .g-2 :global(.g-item-2) {
+      grid-column: 8 / -1;
+      margin-top: 5rem;
+    }
+
+    .g-3 :global(.g-item-1),
+    .g-4 :global(.g-item-1) {
+      grid-column: 1 / span 5;
+    }
+
+    .g-3 :global(.g-item-2),
+    .g-4 :global(.g-item-2) {
+      grid-column: 6 / -1;
+    }
+
+    .g-3 :global(.g-item-3) {
+      grid-column: 6 / span 5;
+    }
+
+    .g-4 :global(.g-item-3) {
+      grid-column: 6 / span 4;
+    }
+
+    .g-4 :global(.g-item-4) {
+      grid-column: 10 / -1;
+    }
+
+    .projects-wrap {
+      padding-left: var(--indent);
+    }
+
+    .closing {
+      margin-left: var(--indent);
+    }
+
+    .interlude {
+      padding: 7rem 0 2rem 10.5rem;
+    }
+  }
+
+  @media (max-width: 51.99rem) {
+    .interlude {
+      padding-top: 4rem;
+    }
+  }
+</style>

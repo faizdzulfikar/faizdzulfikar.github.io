@@ -1,0 +1,65 @@
+---
+// One image with caption and focal point. With no src it renders a quiet placeholder frame
+// (only when placeholders are enabled; otherwise the caller filters it out).
+interface Props {
+  src?: string;
+  alt?: string;
+  caption?: string;
+  focus?: string;
+  ratio?: string;
+  eager?: boolean;
+  class?: string;
+}
+const { src, alt = '', caption, focus = 'center', ratio = '4 / 5', eager = false, class: className } = Astro.props;
+---
+<figure class:list={['fig', className]} style={`--ratio: ${ratio}; --focus: ${focus};`}>
+  {src ? (
+    <img src={src} alt={alt} loading={eager ? 'eager' : 'lazy'} decoding="async" fetchpriority={eager ? 'high' : undefined} />
+  ) : (
+    <div class="ph" role="img" aria-label={alt ? `Photo to come: ${alt}` : 'Photo to come'}>
+      <span>Photo to come</span>
+    </div>
+  )}
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+  .fig {
+    margin: 0;
+  }
+
+  img,
+  .ph {
+    width: 100%;
+    aspect-ratio: var(--ratio);
+    object-fit: cover;
+    object-position: var(--focus);
+    background: var(--bg-raised);
+  }
+
+  .ph {
+    display: grid;
+    place-items: end start;
+    padding: 1rem;
+    border: 1px solid var(--rule);
+    background-image: repeating-linear-gradient(
+      -45deg,
+      transparent 0 14px,
+      color-mix(in srgb, var(--rule) 45%, transparent) 14px 15px
+    );
+  }
+
+  .ph span {
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  figcaption {
+    margin-top: 0.6rem;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    color: var(--muted);
+  }
+</style>

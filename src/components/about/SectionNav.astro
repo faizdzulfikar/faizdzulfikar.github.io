@@ -1,0 +1,222 @@
+---
+// Section navigation for long pages: a sticky rail in the left margin on wide screens,
+// a compact "Contents" bar on smaller screens, and a thin reading-progress line.
+// Works without JavaScript (plain anchor links); the script only adds highlighting and progress.
+interface Props {
+  items: { id: string; label: string; number?: string }[];
+}
+const { items } = Astro.props;
+---
+<div class="progress" aria-hidden="true"><span></span></div>
+
+<aside class="rail" aria-label="Sections">
+  <ol>
+    {items.map((it) => (
+      <li><a href={`#${it.id}`} data-nav={it.id} data-label={[it.number, it.label].filter(Boolean).join(' ')}>{it.number && <span class="n">{it.number}</span>}<span class="l">{it.label}</span></a></li>
+    ))}
+  </ol>
+</aside>
+
+<div class="bar">
+  <details class="bar-inner">
+    <summary>
+      <span class="bar-label">Contents</span>
+      <span class="bar-current" aria-hidden="true"></span>
+    </summary>
+    <nav aria-label="Sections">
+      <ol>
+        {items.map((it) => (
+          <li><a href={`#${it.id}`} data-nav={it.id} data-label={[it.number, it.label].filter(Boolean).join(' ')}>{it.number && <span class="n">{it.number}</span>}<span class="l">{it.label}</span></a></li>
+        ))}
+      </ol>
+    </nav>
+  </details>
+</div>
+
+<script>
+  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-nav]'));
+  const ids = Array.from(new Set(links.map((a) => a.dataset.nav!)));
+  const sections = ids.map((id) => document.getElementById(id)).filter((el): el is HTMLElement => !!el);
+  const current = document.querySelector<HTMLElement>('.bar-current');
+  const details = document.querySelector<HTMLDetailsElement>('.bar-inner');
+  const bar = document.querySelector<HTMLElement>('.progress span');
+
+  const setActive = (id: string | null) => {
+    links.forEach((a) => {
+      if (a.dataset.nav === id) a.setAttribute('aria-current', 'location');
+      else a.removeAttribute('aria-current');
+    });
+    const link = links.find((a) => a.dataset.nav === id);
+    if (current) current.textContent = link?.dataset.label ?? '';
+  };
+
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    const line = window.innerHeight * 0.3;
+    let active: string | null = null;
+    for (const s of sections) {
+      if (s.getBoundingClientRect().top <= line) active = s.id;
+    }
+    setActive(active);
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    if (bar) bar.style.transform = `scaleX(${max > 0 ? Math.min(1, window.scrollY / max) : 0})`;
+  };
+  const onScroll = () => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(update);
+    }
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  update();
+
+  links.forEach((a) => a.addEventListener('click', () => details?.removeAttribute('open')));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && details?.open) {
+      details.removeAttribute('open');
+      details.querySelector('summary')?.focus();
+    }
+  });
+</script>
+
+<style>
+  .progress {
+    position: fixed;
+    inset: 0 0 auto 0;
+    height: 2px;
+    z-index: 20;
+    pointer-events: none;
+  }
+
+  .progress span {
+    display: block;
+    height: 100%;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+  }
+
+  ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  a {
+    display: flex;
+    gap: 0.6rem;
+    text-decoration: none;
+    color: var(--muted);
+  }
+
+  a:hover,
+  a[aria-current] {
+    color: var(--text);
+  }
+
+  .n {
+    font-variant-numeric: tabular-nums;
+    min-width: 1.4rem;
+    font-size: 0.75rem;
+    padding-top: 0.15em;
+  }
+
+  a[aria-current] .n {
+    color: var(--accent);
+  }
+
+  /* Wide screens: rail in the left margin */
+  .rail {
+    display: none;
+  }
+
+  /* Smaller screens: compact sticky bar */
+  .bar {
+    position: sticky;
+    top: 0;
+    z-index: 15;
+    background: color-mix(in srgb, var(--bg) 92%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .bar-inner {
+    width: min(100% - 2 * var(--gutter), var(--wide));
+    margin-inline: auto;
+    position: relative;
+  }
+
+  summary {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    padding: 0.7rem 0;
+    cursor: pointer;
+    list-style: none;
+    font-size: 0.875rem;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .bar-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .bar-label::after {
+    content: '+';
+    margin-left: 0.4rem;
+    color: var(--accent);
+  }
+
+  details[open] .bar-label::after {
+    content: '–';
+  }
+
+  .bar-current {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .bar nav {
+    padding: 0.25rem 0 1rem;
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+
+  .bar li a {
+    padding: 0.45rem 0;
+    font-size: 0.9375rem;
+  }
+
+  @media (min-width: 88rem) {
+    .bar {
+      display: none;
+    }
+
+    .rail {
+      display: block;
+      position: sticky;
+      top: 2.5rem;
+      align-self: start;
+      justify-self: end;
+      width: 10rem;
+      margin-right: 2.5rem;
+      padding-top: 6rem;
+      font-size: 0.8125rem;
+      line-height: 1.35;
+    }
+
+    .rail li + li {
+      margin-top: 0.55rem;
+    }
+  }
+</style>

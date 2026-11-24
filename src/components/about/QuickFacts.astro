@@ -1,0 +1,86 @@
+---
+interface Props {
+  title?: string;
+  items: { label: string; value: string }[];
+  id?: string;
+}
+const { title = 'At a glance', items, id = 'at-a-glance' } = Astro.props;
+---
+{items.length > 0 && (
+  <section class="facts" id={id} aria-labelledby={`${id}-title`}>
+    <h2 id={`${id}-title`} class="facts-title">{title}</h2>
+    <dl>
+      {items.map((f) => (
+        <div class="fact">
+          <dt>{f.label}</dt>
+          <dd>{f.value}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+)}
+
+<style>
+  .facts {
+    display: grid;
+    grid-template-columns: minmax(0, 11rem) minmax(0, 1fr);
+    gap: 1.5rem 2.5rem;
+    padding: 2.5rem 0 3rem;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .facts-title {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-top: 0.2rem;
+  }
+
+  dl {
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.6rem 2rem;
+  }
+
+  .fact {
+    min-width: 0;
+  }
+
+  dt {
+    font-size: 0.8125rem;
+    color: var(--muted);
+    margin-bottom: 0.2rem;
+  }
+
+  dd {
+    margin: 0;
+    font-size: 1.125rem;
+    line-height: 1.3;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  @media (max-width: 52rem) {
+    .facts {
+      grid-template-columns: 1fr;
+    }
+
+    dl {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 30rem) {
+    dl {
+      gap: 1.25rem 1.25rem;
+    }
+
+    dd {
+      font-size: 1rem;
+    }
+  }
+</style>

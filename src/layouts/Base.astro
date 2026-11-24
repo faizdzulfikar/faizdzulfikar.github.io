@@ -5,9 +5,10 @@ import profile from '../data/profile.json';
 interface Props {
   title?: string;
   description?: string;
+  image?: string;
 }
 
-const { title, description = profile.intro } = Astro.props;
+const { title, description = profile.intro, image } = Astro.props;
 const fullTitle = title ? `${title} | ${profile.name}` : `${profile.name}, ${profile.title.toLowerCase()}`;
 const path = Astro.url.pathname;
 const nav = [
@@ -35,6 +36,7 @@ const contacts = [
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    {image && <meta property="og:image" content={new URL(image, Astro.site)} />}
     <link rel="canonical" href={new URL(path, Astro.site)} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="alternate" type="application/rss+xml" title={`${profile.name}: writing`} href="/rss.xml" />

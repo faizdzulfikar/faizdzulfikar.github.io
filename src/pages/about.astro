@@ -1,30 +1,299 @@
 ---
-import { getEntry, render } from 'astro:content';
+import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
+import AboutSection from '../components/about/AboutSection.astro';
+import Figure from '../components/about/Figure.astro';
+import QuickFacts from '../components/about/QuickFacts.astro';
+import SectionNav from '../components/about/SectionNav.astro';
+import about from '../data/about.json';
 import profile from '../data/profile.json';
 
-const about = await getEntry('pages', 'about');
-if (!about) throw new Error('Missing src/content/pages/about.md');
-const { Content } = await render(about);
+// Placeholders for missing photos always show in `astro dev`, and on the live site only if enabled in the CMS.
+const showPlaceholders = import.meta.env.DEV || about.showPlaceholders === true;
+
+const sections = (await getCollection('about', (e) => e.data.visible)).sort((a, b) => a.data.order - b.data.order);
+const allProjects = await getCollection('projects');
+
+// Hero is 01; numbered sections follow. Quote interludes are not numbered or listed.
+let n = 1;
+const numbered = sections.map((entry) => ({
+  entry,
+  number: entry.data.layout === 'quote' ? undefined : String(++n).padStart(2, '0'),
+  projects: entry.data.projects
+    .map((id) => allProjects.find((p) => p.id === id))
+    .filter((p): p is NonNullable<typeof p> => !!p),
+}));
+
+const navItems = numbered
+  .filter((s) => s.number)
+  .map((s) => ({ id: s.entry.id, label: s.entry.data.navLabel || s.entry.data.title, number: s.number }));
+
+const hero = about.hero;
+const introParas = (hero.intro || '').split(/\n\s*\n/).map((s) => s.trim()).filter(Boolean);
+const facts = about.quickFacts;
+const showFacts = facts.visible !== false && facts.items.length > 0;
+const portrait = hero.portrait || '';
+const updated = about.updated ? new Date(about.updated) : undefined;
+const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 ---
-<Base title="About">
-  <div class="wrap">
-    <header class="page-head about-head">
-      {profile.photo && <img class="photo" src={profile.photo} alt={`Portrait of ${profile.name}`} width="160" height="200" />}
-      <h1>About</h1>
-    </header>
-    <div class="prose">
-      <Content />
+<Base title={about.seoTitle || 'About'} description={about.seoDescription || hero.intro} image={portrait || undefined}>
+  <script is:inline>
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal-ready');
+  </script>
+
+  <header class:list={['hero', 'wrap', { 'has-portrait': portrait }]} id="introduction">
+    <div class="hero-text">
+      <p class="kicker"><span class="num">01</span><span class="line" aria-hidden="true"></span><span>{hero.eyebrow || 'About'}</span></p>
+      <h1>{profile.name}</h1>
+      <p class="headline">{hero.headline}</p>
+      {introParas.map((para) => <p class="intro">{para}</p>)}
+      {hero.location && <p class="where"><span class="where-label">Based in</span> {hero.location}</p>}
+    </div>
+
+    {portrait && (
+      <Figure
+        class="portrait"
+        src={portrait}
+        alt={hero.portraitAlt || `Portrait of ${profile.name}`}
+        caption={hero.portraitCaption || undefined}
+        focus={hero.portraitFocus || 'center'}
+        ratio="4 / 5"
+        eager
+      />
+    )}
+
+    <nav class="index" aria-label="On this page">
+      <p class="index-title">In this profile</p>
+      <ol>
+        {navItems.map((it) => (
+          <li><a href={`#${it.id}`}><span class="n">{it.number}</span>{it.label}</a></li>
+        ))}
+      </ol>
+    </nav>
+  </header>
+
+  <div class="about-body">
+    <SectionNav items={navItems} />
+    <div class="about-main wrap">
+      {showFacts && (
+        <div class="facts-wrap">
+          <QuickFacts title={facts.title} items={facts.items} />
+        </div>
+      )}
+
+      {numbered.map((s) => (
+        <AboutSection entry={s.entry} number={s.number} projects={s.projects} showPlaceholders={showPlaceholders} />
+      ))}
+
+      {updated && !Number.isNaN(updated.valueOf()) && (
+        <p class="updated">Last updated <time datetime={about.updated}>{fmt.format(updated)}</time></p>
+      )}
     </div>
   </div>
 </Base>
 
 <style>
-  .photo {
-    width: 10rem;
-    aspect-ratio: 4 / 5;
-    object-fit: cover;
-    border-radius: 4px;
-    margin-bottom: 2rem;
+  /* Hero */
+  .hero {
+    display: grid;
+    gap: 2.5rem;
+    padding: 3.5rem 0 3rem;
+    scroll-margin-top: 4rem;
+  }
+
+  .kicker {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin: 0 0 1.5rem;
+    font-size: 0.8125rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .num {
+    color: var(--accent);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .line {
+    flex: 0 0 3rem;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  h1 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    margin-bottom: 1rem;
+  }
+
+  .headline {
+    margin: 0 0 1.75rem;
+    font-size: clamp(2.25rem, 6.2vw, 4.25rem);
+    font-weight: 600;
+    line-height: 1.02;
+    letter-spacing: -0.045em;
+    max-width: 17ch;
+    text-wrap: balance;
+  }
+
+  .intro {
+    font-size: clamp(1.125rem, 2vw, 1.3rem);
+    line-height: 1.55;
+    max-width: 36rem;
+    text-wrap: pretty;
+  }
+
+  .where {
+    margin: 1.5rem 0 0;
+    font-size: 0.9375rem;
+  }
+
+  .where-label {
+    color: var(--muted);
+    margin-right: 0.35rem;
+  }
+
+  .hero :global(.portrait) {
+    max-width: 22rem;
+  }
+
+  .index {
+    display: none;
+    border-top: 1px solid var(--rule);
+    padding-top: 1.25rem;
+  }
+
+  .index-title {
+    margin: 0 0 0.8rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .index ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    columns: 2;
+    column-gap: 2rem;
+    font-size: 0.9375rem;
+  }
+
+  .index li {
+    break-inside: avoid;
+    padding: 0.2rem 0;
+  }
+
+  .index a {
+    text-decoration: none;
+    color: var(--muted);
+  }
+
+  .index a:hover {
+    color: var(--text);
+  }
+
+  .index .n {
+    display: inline-block;
+    min-width: 1.75rem;
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--accent);
+  }
+
+  @media (min-width: 52rem) {
+    .hero {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 18rem);
+      column-gap: 4rem;
+      padding-top: 5rem;
+    }
+
+    .hero-text {
+      grid-column: 1 / -1;
+    }
+
+    .hero.has-portrait .hero-text {
+      grid-column: 1;
+    }
+
+    .hero :global(.portrait) {
+      grid-column: 2;
+      grid-row: 1;
+      align-self: end;
+    }
+
+    .index {
+      display: block;
+      grid-column: 1 / -1;
+    }
+
+    .index ol {
+      columns: 3;
+    }
+  }
+
+  /* Body with the side rail on wide screens */
+  @media (min-width: 88rem) {
+    .about-body {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) var(--wide) minmax(0, 1fr);
+    }
+
+    .about-main {
+      grid-column: 2;
+      grid-row: 1;
+      width: auto;
+      margin: 0;
+    }
+  }
+
+  .facts-wrap {
+    margin-top: 2.5rem;
+  }
+
+  .updated {
+    margin: 2rem 0 0;
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+
+  /* Gentle reveal on scroll. Content is visible without JavaScript or with reduced motion. */
+  :global(.reveal-ready) :global(.reveal) {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity 0.8s cubic-bezier(0.2, 0.7, 0.2, 1),
+      transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  :global(.reveal-ready) :global(.reveal.is-in) {
+    opacity: 1;
+    transform: none;
   }
 </style>
+
+<script>
+  const els = document.querySelectorAll('.reveal');
+  if (document.documentElement.classList.contains('reveal-ready') && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-in');
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { rootMargin: '0px 0px -8% 0px' },
+    );
+    els.forEach((el) => io.observe(el));
+  } else {
+    els.forEach((el) => el.classList.add('is-in'));
+  }
+</script>
