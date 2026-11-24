@@ -1,6 +1,6 @@
 ---
 title: "Interlude: medicine is one part"
-order: 2.5
+order: 1.5
 visible: true
 layout: quote
 pullQuote:

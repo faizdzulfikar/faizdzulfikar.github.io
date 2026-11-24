@@ -29,6 +29,7 @@ const navItems = numbered
   .map((s) => ({ id: s.entry.id, label: s.entry.data.navLabel || s.entry.data.title, number: s.number }));
 
 const hero = about.hero;
+const introParas = (hero.intro || '').split(/\n\s*\n/).map((s) => s.trim()).filter(Boolean);
 const facts = about.quickFacts;
 const showFacts = facts.visible !== false && facts.items.length > 0;
 const portrait = hero.portrait || '';
@@ -45,7 +46,7 @@ const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', ye
       <p class="kicker"><span class="num">01</span><span class="line" aria-hidden="true"></span><span>{hero.eyebrow || 'About'}</span></p>
       <h1>{profile.name}</h1>
       <p class="headline">{hero.headline}</p>
-      {hero.intro && <p class="intro">{hero.intro}</p>}
+      {introParas.map((para) => <p class="intro">{para}</p>)}
       {hero.location && <p class="where"><span class="where-label">Based in</span> {hero.location}</p>}
     </div>
 

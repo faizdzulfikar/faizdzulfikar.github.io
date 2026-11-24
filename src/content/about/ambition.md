@@ -7,13 +7,23 @@ order: 9
 visible: true
 layout: text
 pullQuote:
-  text: "I'm still learning how to love medicine without allowing it to consume my entire life."
+  text: "Yes, I'm aware of the irony of wanting work-life balance while aspiring to become a cardiologist."
 ---
 
-<!-- TODO (Faiz): ambition and curiosity; how easily you get obsessed with new interests; the struggle with focus and consistency. -->
+I'm ambitious. I'm analytical. I enjoy achievement, recognition, and the feeling that something I've done has made a difference.
 
-<!-- TODO (Faiz): uncertainty about the future of the medical profession. -->
+But underneath all of that is an almost inconvenient amount of curiosity.
 
-I'd like to be a clinician, an innovator, an academic and an entrepreneur. The plan for now is a master's in public health, and then cardiology.
+I can become completely absorbed in a new interest, spend days exploring it, and then find myself distracted by something equally fascinating. Consistency is something I'm still working on.
 
-I also want a balanced life, which is a slightly ironic thing to want while aiming for cardiology.
+I don't have my future entirely figured out, either.
+
+I worry about the future of the medical profession, the emotional demands of clinical practice, and whether the career I love will allow me to build the life I want.
+
+I'd like to pursue postgraduate education, become a cardiologist, contribute to research, build useful things, and eventually explore entrepreneurship.
+
+I'd also like to own a home, finish a marathon, spend meaningful time with the people I love, and maintain a life outside work.
+
+Yes, I'm aware of the irony of wanting work-life balance while aspiring to become a cardiologist.
+
+I'm not sure I have a solution to that particular problem yet.

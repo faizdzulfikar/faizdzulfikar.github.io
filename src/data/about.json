@@ -4,9 +4,9 @@
   "updated": "2026-11-24",
   "showPlaceholders": false,
   "hero": {
-    "eyebrow": "About",
+    "eyebrow": "A little more about me",
     "headline": "A physician, a curious mind, and a perpetual work in progress.",
-    "intro": "I'm a medical doctor in Yogyakarta, working as a research assistant in cardiology at Universitas Gadjah Mada and Dr. Sardjito Hospital. This page is less a CV than a profile: how I ended up in medicine, why the heart and public health pull at me, and what fills the hours outside work.",
+    "intro": "I'm Faiz, a medical doctor based in Yogyakarta, Indonesia. Depending on when you meet me, I might be talking about cardiovascular medicine, building a web application, dissecting a healthcare system, obsessing over a new piece of technology, or complaining about how difficult running is while voluntarily signing up for another race.\n\nI have a habit of getting deeply interested in things. Sometimes a little too deeply. My interests tend to evolve, my browser tabs tend to multiply, and my list of things I want to learn never seems to get shorter.",
     "location": "Yogyakarta, Indonesia",
     "portrait": "",
     "portraitAlt": "Portrait of Faiz Dzulfikar",
@@ -17,18 +17,54 @@
     "visible": true,
     "title": "At a glance",
     "items": [
-      { "label": "Based in", "value": "Yogyakarta, Indonesia" },
-      { "label": "Profession", "value": "Medical doctor" },
-      { "label": "Thinking style", "value": "Analytical & systems-oriented" },
-      { "label": "Creative outlets", "value": "Design, video & technology" },
-      { "label": "Favorite aesthetic", "value": "Editorial minimalism" },
-      { "label": "Favorite band", "value": "Lomba Sihir" },
-      { "label": "Memorable film", "value": "TRON: Legacy" },
-      { "label": "Current quest", "value": "42.195 km" },
-      { "label": "Least favorite sport", "value": "Football" },
-      { "label": "Former identity", "value": "A ten-books-a-month bookworm" },
-      { "label": "Recurring problem", "value": "Too many interests, too little time" },
-      { "label": "Unresolved paradox", "value": "Cardiology × work-life balance" }
+      {
+        "label": "Based in",
+        "value": "Yogyakarta, Indonesia"
+      },
+      {
+        "label": "Profession",
+        "value": "Medical doctor"
+      },
+      {
+        "label": "Thinking style",
+        "value": "Analytical & systems-oriented"
+      },
+      {
+        "label": "Creative outlets",
+        "value": "Design, video & technology"
+      },
+      {
+        "label": "Favorite aesthetic",
+        "value": "Editorial minimalism"
+      },
+      {
+        "label": "Favorite band",
+        "value": "Lomba Sihir"
+      },
+      {
+        "label": "Memorable film",
+        "value": "TRON: Legacy"
+      },
+      {
+        "label": "Current quest",
+        "value": "42.195 km"
+      },
+      {
+        "label": "Least favorite sport",
+        "value": "Football"
+      },
+      {
+        "label": "Former identity",
+        "value": "A ten-books-a-month bookworm"
+      },
+      {
+        "label": "Recurring problem",
+        "value": "Too many interests, too little time"
+      },
+      {
+        "label": "Unresolved paradox",
+        "value": "Cardiology × work-life balance"
+      }
     ]
   }
 }

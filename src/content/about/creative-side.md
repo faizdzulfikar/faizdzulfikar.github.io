@@ -24,8 +24,18 @@ links:
     href: /creative/
 ---
 
-I started designing and making videos in senior high school, through Artday 2016. I have never been able to draw in the conventional sense, so digital tools became my way in.
+I can't draw.
 
-<!-- TODO (Faiz): your family's background in fine art, and what it gave you. -->
+That might be a slightly inconvenient confession for someone whose grandfather was a professor of fine arts and a former dean of the Faculty of Art and Design at Institut Teknologi Bandung.
 
-Since then I've designed visual identities for MEDSKILL and VRIPE-Health, edited a public health magazine for CIMSA, and filmed and edited educational videos for Kolom Remaja. These days I'm drawn most to editorial design and minimalism, which you may have noticed on this page.
+Fortunately, computers exist.
+
+I discovered graphic design and videography during high school, around the time I became involved in a theatrical event called Artday in 2016.
+
+Digital tools gave me a medium through which I could express ideas without needing to be particularly talented with a pencil.
+
+Over time, designing and creating became skills I developed through experimentation, observation, and a lot of trial and error.
+
+I'm particularly drawn to editorial design and minimalism. I appreciate thoughtful typography, clean layouts, visual hierarchy, and designs that communicate without unnecessary noise.
+
+Whether I'm designing a poster, editing a video, or building a website, I enjoy figuring out how something should look, feel, and function.

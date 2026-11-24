@@ -39,7 +39,7 @@ content:
         fields:
           - { name: eyebrow, label: Small label above your name, type: string }
           - { name: headline, label: Headline, type: text, required: true }
-          - { name: intro, label: Introduction paragraph, type: text }
+          - { name: intro, label: Introduction (leave a blank line between paragraphs), type: text }
           - { name: location, label: Location, type: string }
           - { name: portrait, label: Portrait photo (portrait orientation, 4:5 works best), type: image }
           - { name: portraitAlt, label: Portrait description for screen readers, type: string }

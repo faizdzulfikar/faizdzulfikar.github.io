@@ -1,5 +1,5 @@
 ---
-title: A systems thinker
+title: I tend to see things as systems.
 navLabel: Systems thinker
 eyebrow: How I think
 subtitle: When something keeps going wrong, I want to know which part of the system lets it.
@@ -13,8 +13,16 @@ links:
     href: /experience/
 ---
 
-<!-- TODO (Faiz): how you tend to see problems as systems, and your love of efficiency and workflow. -->
+When something doesn't work particularly well, my instinct is to understand why.
 
-Most of what I've built started as something I needed myself: a registry that didn't lose follow-ups, a Prolanis record that the puskesmas team could actually use, a quick reference for night shifts in the ER. That is also why clinical registries and research infrastructure interest me. They are unglamorous, and almost everything else in research depends on them.
+How did this process come to exist? Where is the bottleneck? Why are people doing the same thing repeatedly? Could it be simpler? Could it be better?
 
-You can see where that has led so far on my [projects page](/projects/), and the research side of it under [experience](/experience/).
+I enjoy looking at the relationships between individual components rather than treating every problem in isolation.
+
+This mindset has naturally influenced my interest in healthcare technology, clinical registries, research infrastructure, and digital tools.
+
+Some of the [projects](/projects/) you'll find on this website began with a fairly ordinary observation: something was unnecessarily complicated, and I wanted to see whether I could make it a little better.
+
+I particularly enjoy the process of creating. The experimenting, the problem-solving, the occasional frustration, and the moment when something finally works.
+
+Seeing other people find it useful is the reward at the end.

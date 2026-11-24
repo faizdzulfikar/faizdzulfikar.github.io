@@ -6,12 +6,20 @@ subtitle: One patient at a time, and a whole population at once.
 order: 3
 visible: true
 layout: text
+pullQuote:
+  text: "Medicine allows me to understand what happens to an individual. Public health allows me to ask why it happens to entire populations."
 ---
 
-<!-- TODO (Faiz): the sentimental reason behind your interest in cardiology. -->
+My interest in cardiology is deeply personal. Cardiovascular disease has affected several members of my family, making the subject feel much closer to home than something I simply encountered in a textbook.
 
-The two settings of my internship shaped what I care about. The hospital showed me how much cardiovascular disease decides a patient's course. The puskesmas showed me that most of the work of preventing it happens long before anyone reaches a cath lab: in screening, follow-up, and records that are good enough to act on.
+There is something fascinating about the heart, both as an organ and as a remarkably complex physiological system. The more I learn about it, the more I realize how much there is left to understand.
 
-<!-- TODO (Faiz): your interest in social science, politics and policy, and how it connects to public health. -->
+Public health, on the other hand, appeals to a different side of me.
 
-Today I work as a research assistant in the COHARD-PH division of the Department of Cardiology and Vascular Medicine at UGM and Dr. Sardjito Hospital. My long-term aim is cardiology. Before that, I want to study public health, so I can understand cardiovascular disease at the level of populations and health systems, not only individual patients.
+I've always enjoyed social sciences, politics, and understanding how societies function. I'm interested in how policies, institutions, economic conditions, and social structures influence people's lives, including their health.
+
+Medicine allows me to understand what happens to an individual. Public health allows me to ask why it happens to entire populations.
+
+I find both perspectives equally compelling.
+
+Today, my professional interests lie somewhere between cardiovascular medicine, clinical research, public health, and the systems that support healthcare delivery.

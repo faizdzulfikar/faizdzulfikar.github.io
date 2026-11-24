@@ -15,14 +15,24 @@ images:
     alt: "Faiz at the medical oath ceremony"
     caption: "Taking the physician's oath, 2025"
     focus: center
+pullQuote:
+  text: "I'm still learning how to love medicine without allowing it to consume my entire life."
 ---
 
-As a child, I wanted to be a dentist. By the time I was choosing a university, most of my attention had drifted to technology, and I seriously considered the School of Electrical Engineering and Informatics at ITB, as well as industrial technology. In the end I chose medicine at Universitas Gadjah Mada.
+Growing up, whenever someone asked what I wanted to be, my answer was always a doctor. A dentist, actually. Somewhere along the way, the dentistry part disappeared, but the idea of becoming a doctor stayed.
 
-<!-- TODO (Faiz): why medicine won over STEI ITB, and how it felt to make that call. -->
+That doesn't mean medicine was my only option. Before university, I seriously considered electrical engineering, informatics, and industrial technology. I had always been fascinated by computers and technological progress, and I could easily imagine myself pursuing something in that direction.
 
-<!-- TODO (Faiz): the reality and difficulty of medical school, in your own words. -->
+Ultimately, I chose medicine at Universitas Gadjah Mada. It was a combination of childhood aspirations, personal interest, family influence, and what seemed like a promising career at the time.
 
-I graduated as a doctor in 2025. My internship took me first to Santa Elisabeth General Hospital, through its wards, emergency room and delivery suite, and then to Pundong Public Health Center, where I saw the same chronic diseases return month after month in the Prolanis clinic.
+Have I ever questioned that decision?
 
-<!-- TODO (Faiz): your relationship with being a doctor; what you love about medicine and what you find hard. -->
+Approximately a thousand times.
+
+Medical school was difficult. Becoming a doctor was difficult. Being a doctor comes with a different kind of difficulty altogether. But despite everything, I still genuinely enjoy medicine.
+
+I love meeting patients, understanding their stories, figuring out what is happening, and being able to do something about it. Perhaps there is a little superhero complex in there, too.
+
+What I struggle with is the cost that sometimes comes with it: losing patients, carrying emotional burdens home, sacrificing personal time, and navigating a profession that doesn't always leave enough room for the person behind the white coat.
+
+I'm still learning how to love medicine without allowing it to consume my entire life.

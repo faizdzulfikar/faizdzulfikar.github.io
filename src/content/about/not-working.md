@@ -15,14 +15,14 @@ images:
     alt: "A personal snapshot"
     caption: "Everyday"
     focus: center
-pullQuote:
-  text: "Not every moment needs to be productive."
 ---
 
-Most of my time outside work goes to my family.
+My ideal day off starts with a run and a gym session, followed by spending time with my family.
 
-I listen to a lot of Lomba Sihir. The film I keep coming back to is TRON: Legacy.
+Quality time matters a lot to me. Sometimes the best part of a day is simply sitting down with my parents, talking about whatever comes to mind, or going somewhere together.
 
-I used to read about ten books a month. I'm trying to become an active reader again.
+I also love films. *TRON: Legacy* remains one of the most memorable films from my younger years, largely because of how extraordinary its visual world felt at the time.
 
-<!-- TODO (Faiz): everyday activities outside medicine. -->
+Musically, I'm a particularly enthusiastic fan of Lomba Sihir. There's something about their music and energy that makes listening to them, especially live, such a joyful experience.
+
+I'm also trying to become a reader again. There was a time when I could finish ten books in a month. These days, rediscovering that version of myself is a project of its own.
