@@ -1,0 +1,16 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import ProjectList from '../../components/ProjectList.astro';
+
+const items = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+---
+<Base title="Projects" description="Clinical and research software built by Faiz Dzulfikar.">
+  <div class="wrap">
+    <header class="page-head">
+      <h1>Projects</h1>
+      <p>Tools I've built for problems I met in clinics, wards and research. Most of them handle patient data, so their code stays private.</p>
+    </header>
+    <ProjectList items={items} />
+  </div>
+</Base>

@@ -1,0 +1,66 @@
+---
+// One strip of sinus rhythm, drawn once when the page loads.
+const W = 1200;
+const base = 60;
+const beat = 300;
+let d = `M0 ${base}`;
+for (let x = 0; x < W; x += beat) {
+  const p = [
+    [x + 40, base],
+    [x + 55, base - 7],
+    [x + 70, base],
+    [x + 100, base],
+    [x + 106, base + 8],
+    [x + 116, base - 52],
+    [x + 126, base + 18],
+    [x + 134, base],
+    [x + 165, base],
+    [x + 190, base - 14],
+    [x + 215, base],
+    [x + beat, base],
+  ];
+  d += p.map(([px, py]) => ` L${px} ${py}`).join('');
+}
+---
+<div class="trace" aria-hidden="true">
+  <svg viewBox={`0 0 ${W} 90`} preserveAspectRatio="none">
+    <path d={d} pathLength="1" />
+  </svg>
+</div>
+
+<style>
+  .trace {
+    height: 5.5rem;
+    margin: 0 0 2.5rem;
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  path {
+    fill: none;
+    stroke: var(--trace);
+    stroke-width: 1.6;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: draw 2.6s cubic-bezier(0.45, 0, 0.2, 1) 0.2s forwards;
+  }
+
+  @keyframes draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    path {
+      stroke-dashoffset: 0;
+    }
+  }
+</style>

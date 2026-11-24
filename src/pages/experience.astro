@@ -1,0 +1,95 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import profile from '../data/profile.json';
+
+const order = [
+  'Research',
+  'Clinical',
+  'Education',
+  'Creative and communication',
+  'Organisations',
+  'Certificates and presentations',
+] as const;
+
+const all = await getCollection('cv');
+const sections = await Promise.all(
+  order.map(async (name) => {
+    const items = all
+      .filter((e) => e.data.section === name)
+      .sort((a, b) => b.data.sort.valueOf() - a.data.sort.valueOf());
+    const rendered = await Promise.all(items.map(async (e) => ({ e, Content: (await render(e)).Content })));
+    return { name, items: rendered };
+  }),
+);
+---
+<Base title="Experience" description={`Clinical, research and creative experience of ${profile.name}.`}>
+  <div class="wrap">
+    <header class="page-head">
+      <h1>Experience</h1>
+      <p>Clinical work, research, and everything I've done alongside medicine.</p>
+      {profile.cvPdf && <p class="sans no-print"><a href={profile.cvPdf}>Download CV (PDF)</a></p>}
+    </header>
+
+    {sections.filter((s) => s.items.length).map((s) => (
+      <section class="cv-section">
+        <h2>{s.name}</h2>
+        <ol>
+          {s.items.map(({ e, Content }) => (
+            <li>
+              <p class="meta when">{e.data.period}</p>
+              <div class="what">
+                <h3>{e.data.title}</h3>
+                <p class="meta org">{e.data.organization}{e.data.location && `, ${e.data.location}`}</p>
+                <div class="prose body"><Content /></div>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+    ))}
+  </div>
+</Base>
+
+<style>
+  .cv-section {
+    padding-top: 2.5rem;
+  }
+
+  .cv-section h2 {
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    display: grid;
+    grid-template-columns: 11rem minmax(0, 1fr);
+    gap: 0.25rem 2.5rem;
+    padding: 1.4rem 0 0.4rem;
+  }
+
+  .when {
+    margin: 0.3rem 0 0;
+  }
+
+  .org {
+    margin: 0.2rem 0 0.6rem;
+    font-size: 0.9375rem;
+  }
+
+  .body {
+    font-size: 1.0625rem;
+  }
+
+  @media (max-width: 44rem) {
+    li {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

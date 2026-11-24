@@ -1,0 +1,192 @@
+---
+import '../styles/global.css';
+import profile from '../data/profile.json';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description = profile.intro } = Astro.props;
+const fullTitle = title ? `${title} | ${profile.name}` : `${profile.name}, ${profile.title.toLowerCase()}`;
+const path = Astro.url.pathname;
+const nav = [
+  { href: '/about/', label: 'About' },
+  { href: '/experience/', label: 'Experience' },
+  { href: '/projects/', label: 'Projects' },
+  { href: '/creative/', label: 'Creative' },
+  { href: '/writing/', label: 'Writing' },
+];
+const contacts = [
+  { href: `mailto:${profile.email}`, label: 'Email' },
+  { href: profile.linkedin, label: 'LinkedIn' },
+  { href: profile.orcid, label: 'ORCID' },
+  { href: profile.instagram, label: 'Instagram' },
+  { href: profile.github, label: 'GitHub' },
+].filter((c) => c.href && !c.href.endsWith(':'));
+---
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <link rel="canonical" href={new URL(path, Astro.site)} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate" type="application/rss+xml" title={`${profile.name}: writing`} href="/rss.xml" />
+    <script is:inline>
+      try {
+        const t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header wrap">
+      <a class="name" href="/" aria-current={path === '/' ? 'page' : undefined}>{profile.name}</a>
+      <nav aria-label="Main">
+        <ul>
+          {nav.map((n) => (
+            <li>
+              <a href={n.href} aria-current={path.startsWith(n.href) ? 'page' : undefined}>{n.label}</a>
+            </li>
+          ))}
+        </ul>
+        <button class="theme" type="button" aria-label="Switch colour theme">
+          <span class="to-light">Light</span><span class="to-dark">Dark</span>
+        </button>
+      </nav>
+    </header>
+    <main id="main">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <p class="sign">{profile.name}, {profile.location}</p>
+        <ul class="sans">
+          {contacts.map((c) => (
+            <li><a href={c.href} rel={c.href.startsWith('http') ? 'me noopener' : undefined}>{c.label}</a></li>
+          ))}
+        </ul>
+      </div>
+    </footer>
+    <script is:inline>
+      document.querySelector('.theme')?.addEventListener('click', () => {
+        const root = document.documentElement;
+        const next = root.dataset.theme === 'light' ? 'dark' : 'light';
+        root.dataset.theme = next;
+        try { localStorage.setItem('theme', next); } catch {}
+      });
+    </script>
+  </body>
+</html>
+
+<style>
+  .site-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem 2rem;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .name {
+    font-size: 1.25rem;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  nav {
+    display: flex;
+    align-items: baseline;
+    gap: 1.25rem;
+    font-family: var(--sans);
+    font-size: 0.9375rem;
+  }
+
+  nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.1rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  nav a {
+    text-decoration: none;
+    color: var(--muted);
+  }
+
+  nav a:hover,
+  nav a[aria-current='page'] {
+    color: var(--text);
+  }
+
+  nav a[aria-current='page'] {
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-underline-offset: 0.35em;
+  }
+
+  .theme {
+    font: inherit;
+    color: var(--muted);
+    background: none;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 0.1rem 0.7rem;
+    cursor: pointer;
+  }
+
+  .theme:hover {
+    color: var(--text);
+    border-color: var(--muted);
+  }
+
+  :root[data-theme='dark'] .to-dark,
+  :root[data-theme='light'] .to-light {
+    display: none;
+  }
+
+  .site-footer {
+    border-top: 1px solid var(--rule);
+    padding: 2rem 0 3rem;
+  }
+
+  .site-footer .wrap {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+  }
+
+  .sign {
+    margin: 0;
+    color: var(--muted);
+  }
+
+  .site-footer ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.25rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 0.9375rem;
+  }
+
+  @media (max-width: 40rem) {
+    nav {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+</style>

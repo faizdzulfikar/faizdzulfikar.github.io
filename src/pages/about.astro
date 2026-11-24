@@ -1,0 +1,30 @@
+---
+import { getEntry, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import profile from '../data/profile.json';
+
+const about = await getEntry('pages', 'about');
+if (!about) throw new Error('Missing src/content/pages/about.md');
+const { Content } = await render(about);
+---
+<Base title="About">
+  <div class="wrap">
+    <header class="page-head about-head">
+      {profile.photo && <img class="photo" src={profile.photo} alt={`Portrait of ${profile.name}`} width="160" height="200" />}
+      <h1>About</h1>
+    </header>
+    <div class="prose">
+      <Content />
+    </div>
+  </div>
+</Base>
+
+<style>
+  .photo {
+    width: 10rem;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-bottom: 2rem;
+  }
+</style>

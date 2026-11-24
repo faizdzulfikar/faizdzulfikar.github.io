@@ -1,0 +1,61 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+const posts = (await getCollection('writing', (p) => !p.data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<Base title="Writing" description="Notes on medicine, public health and building clinical tools.">
+  <div class="wrap">
+    <header class="page-head">
+      <h1>Writing</h1>
+      <p>Notes on medicine, public health, and building tools as a clinician.</p>
+    </header>
+    {posts.length === 0 ? (
+      <p class="empty">The first notes are on their way. Follow along through <a href="/rss.xml">RSS</a>.</p>
+    ) : (
+      <ul class="posts">
+        {posts.map((p) => (
+          <li>
+            <p class="meta">{fmt.format(p.data.date)}</p>
+            <h2><a href={`/writing/${p.id}/`}>{p.data.title}</a></h2>
+            {p.data.description && <p class="desc">{p.data.description}</p>}
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+</Base>
+
+<style>
+  .posts {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-width: var(--measure);
+  }
+
+  li {
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .meta {
+    margin: 0 0 0.35rem;
+  }
+
+  h2 a {
+    text-decoration: none;
+  }
+
+  .desc {
+    margin: 0.5rem 0 0;
+    color: var(--muted);
+  }
+
+  .empty {
+    color: var(--muted);
+  }
+</style>

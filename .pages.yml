@@ -1,0 +1,120 @@
+# Pages CMS configuration: edit the site at https://app.pagescms.org
+media:
+  input: public/images
+  output: /images
+
+content:
+  - name: profile
+    label: Profile
+    type: file
+    path: src/data/profile.json
+    format: json
+    fields:
+      - { name: name, label: Name, type: string }
+      - { name: title, label: Title under your name, type: string }
+      - { name: location, label: Location, type: string }
+      - { name: intro, label: Home page introduction, type: text }
+      - { name: now, label: Now (home page list), type: string, list: true }
+      - { name: email, label: Email, type: string }
+      - { name: linkedin, label: LinkedIn URL, type: string }
+      - { name: instagram, label: Instagram URL, type: string }
+      - { name: orcid, label: ORCID URL, type: string }
+      - { name: github, label: GitHub URL, type: string }
+      - { name: photo, label: Profile photo, type: image }
+      - { name: cvPdf, label: CV PDF (leave empty to hide the download link), type: file }
+
+  - name: about
+    label: About page
+    type: file
+    path: src/content/pages/about.md
+    fields:
+      - { name: title, label: Title, type: string }
+      - { name: body, label: Text, type: rich-text }
+
+  - name: writing
+    label: Writing
+    type: collection
+    path: src/content/writing
+    filename: "{year}-{month}-{day}-{primary}.md"
+    view:
+      fields: [title, date, draft]
+      primary: title
+      sort: [date]
+      default: { sort: date, order: desc }
+    fields:
+      - { name: title, label: Title, type: string, required: true }
+      - { name: date, label: Date, type: date, required: true }
+      - { name: description, label: Short description, type: text }
+      - { name: draft, label: Draft (hidden from the site), type: boolean, default: true }
+      - { name: body, label: Text, type: rich-text }
+
+  - name: projects
+    label: Projects
+    type: collection
+    path: src/content/projects
+    view:
+      fields: [title, status, featured]
+      primary: title
+    fields:
+      - { name: title, label: Title, type: string, required: true }
+      - { name: summary, label: One-sentence summary, type: text, required: true }
+      - { name: role, label: Your role, type: string }
+      - { name: years, label: Year(s), type: string, required: true }
+      - { name: status, label: Status, type: string, required: true }
+      - { name: stack, label: Built with, type: string, list: true }
+      - name: code
+        label: Code
+        type: select
+        options: { values: [Public, Private] }
+      - { name: repo, label: GitHub link (public code only), type: string }
+      - { name: link, label: Live app link, type: string }
+      - { name: image, label: Screenshot, type: image }
+      - { name: featured, label: Show on home page, type: boolean }
+      - { name: order, label: Order (lower comes first), type: number }
+      - { name: body, label: Description, type: rich-text }
+
+  - name: creative
+    label: Creative
+    type: collection
+    path: src/content/creative
+    view:
+      fields: [title, kind, years]
+      primary: title
+    fields:
+      - { name: title, label: Title, type: string, required: true }
+      - name: kind
+        label: Kind
+        type: select
+        options: { values: [Design, Video, Editorial, Campaign] }
+      - { name: client, label: For, type: string }
+      - { name: years, label: Year(s), type: string }
+      - { name: image, label: Image, type: image }
+      - { name: link, label: Link (video, Behance, Instagram post), type: string }
+      - { name: order, label: Order (lower comes first), type: number }
+      - { name: body, label: Description, type: rich-text }
+
+  - name: cv
+    label: Experience
+    type: collection
+    path: src/content/cv
+    view:
+      fields: [title, organization, section]
+      primary: title
+    fields:
+      - { name: title, label: Role or title, type: string, required: true }
+      - { name: organization, label: Organisation, type: string, required: true }
+      - { name: location, label: Location, type: string }
+      - { name: period, label: Period as shown (e.g. August 2025 – February 2026), type: string, required: true }
+      - { name: sort, label: Start date (for ordering), type: date, required: true }
+      - name: section
+        label: Section
+        type: select
+        options:
+          values:
+            - Research
+            - Clinical
+            - Education
+            - Creative and communication
+            - Organisations
+            - Certificates and presentations
+      - { name: body, label: Details, type: rich-text }
